@@ -8,7 +8,7 @@ validate-orb:
 	circleci orb validate orb.yml && echo
 
 publish-orb-dev:
-	circleci orb publish increment orb.yml kchultman/terragrunt@dev:latest && echo
+	circleci orb publish orb.yml kchultman/terragrunt@dev:latest && echo
 	echo ${BUILD_VERSION} > $(BUILD_VERSION_FILE)
 
 promote-dev:
