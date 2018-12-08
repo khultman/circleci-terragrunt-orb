@@ -93,7 +93,6 @@ jobs:
   apply_infrastructure:
     executor:
       name: terraform_executor
-    working_directory: /tmp/workspace
     steps:
       - attach_terraform_workspace
       - terragrunt_apply_all
