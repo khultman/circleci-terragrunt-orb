@@ -2,6 +2,7 @@
 
 ## Usage
 
+### Example
 ```yaml
 version: 2.1
 
