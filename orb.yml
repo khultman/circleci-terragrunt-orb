@@ -47,7 +47,7 @@ commands:
           root: << parameters.workspace_root >>
           paths:
             - .
-            - *
+            - .*
             - .terraform
             - tfplan
 
