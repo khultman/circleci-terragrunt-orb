@@ -31,7 +31,7 @@ workflows:
           context: *context
           requires:
             - terragrunt/validate_infrastructure
-      - terragrunt/approve_infrastructure:
+      - approve_infrastructure:
           <<: *master_workflow_filters
           context: *context
           type: approval
@@ -41,5 +41,5 @@ workflows:
           <<: *master_workflow_filters
           context: *context
           requires:
-            - terragrunt/approve_infrastructure
+            - approve_infrastructure
 ```

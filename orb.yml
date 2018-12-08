@@ -44,7 +44,7 @@ commands:
     steps:
       - run: terragrunt plan-all -input=false -out=tfplan
   terragrunt_apply_all:
-    description: Run terragrunt apply-all
+    description: Run terragrunt apply-all -input=false -auto-approve
     steps:
       - run: terragrunt apply-all -input=false
   set_workspace_persistance:
