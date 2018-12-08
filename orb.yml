@@ -26,7 +26,7 @@ commands:
     steps:
       - run: mkdir ~/.ssh && ssh-keyscan -t rsa << parameters.vcs_provider >> ~/.ssh/known_hosts
   attach_terraform_workspace:
-    description: Attache the workspace to the docker image
+    description: Attach the workspace to the docker image
     parameters:
       workspace_root:
         type: string
@@ -40,13 +40,13 @@ commands:
     steps:
       - run: echo -e "plugin_cache_dir = \"$HOME/.terraform.d/plugin-cache\"\ndisable_checkpoint = true" > ~/.terraformrc
   terragrunt_plan_all:
-    description: Run terragrunt plan-all
+    description: Run terragrunt plan-all --terragrunt-non-interactive
     steps:
-      - run: terragrunt plan-all -input=false -out=tfplan
+      - run: terragrunt plan-all --terragrunt-non-interactive
   terragrunt_apply_all:
-    description: Run terragrunt apply-all -input=false -auto-approve
+    description: Run terragrunt apply-all --terragrunt-non-interactive
     steps:
-      - run: terragrunt apply-all -input=false
+      - run: terragrunt apply-all --terragrunt-non-interactive
   set_workspace_persistance:
     description: Set workspace persistence
     parameters:
