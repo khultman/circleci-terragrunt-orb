@@ -47,6 +47,7 @@ commands:
           root: << parameters.workspace_root >>
           paths:
             - .
+            - *
             - .terraform
             - tfplan
 
@@ -56,6 +57,7 @@ jobs:
       name: terraform_executor
     steps:
       - attach_terraform_workspace
+      - checkout
       - set_workspace_persistance
 
   validate_infrastructure:
