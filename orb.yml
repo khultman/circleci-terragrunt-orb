@@ -1,0 +1,95 @@
+version: 2.1
+
+executors:
+  terraform_executor:
+    docker:
+      - image: << parameters.docker_image >>
+    working_directory: << parameters.workspace_root >>
+    parameters:
+      docker_image:
+        default: khultman/cci-terraform:latest
+        description: The docker image to use
+        type: string
+      workspace_root:
+        type: string
+        description: The working directory for terraform & terragrunt
+        default: /terraform
+
+commands:
+  add_vcs_provider_to_ssh_known_hosts:
+    description: Add VCS provider (github.com or bitbucket.org) to ~/.ssh/known_hosts
+    parameters:
+      vcs_provider:
+        type: string
+        description: Values should be bitbucket.org or github.com (Defaults to bitbucket.org)
+        default: bitbucket.org
+    steps:
+      - run: mkdir ~/.ssh && ssh-keyscan -t rsa << parameters.vcs_provider >> ~/.ssh/known_hosts
+  attach_terraform_workspace:
+    description: Attache the workspace to the docker image
+    parameters:
+      workspace_root:
+        type: string
+        description: The working directory for terraform & terragrunt
+        default: /terraform
+    steps:
+      - attach_workspace:
+          at: << parameters.workspace_root >>
+  set_workspace_persistance:
+    description: Set workspace persistence
+    parameters:
+      workspace_root:
+        type: string
+        description: The working directory for terraform & terragrunt
+        default: /terraform
+    steps:
+      - persist_to_workspace:
+          root: << parameters.workspace_root >>
+          paths:
+            - .
+            - .terraform
+            - tfplan
+
+jobs:
+  checkout:
+    executor:
+      name: terraform_executor
+    steps:
+      - attach_terraform_workspace
+      - set_workspace_persistance
+
+  validate_infrastructure:
+    executor:
+      name: terraform_executor
+    steps:
+      - attach_terraform_workspace
+      - add_vcs_provider_to_ssh_known_hosts
+      - run:
+          name: Set terraform plugins directory
+          command: echo -e "plugin_cache_dir = \"$HOME/.terraform.d/plugin-cache\"\ndisable_checkpoint = true" > ~/.terraformrc
+      - set_workspace_persistance
+
+  plan_infrastructure:
+    executor:
+      name: terraform_executor
+    steps:
+      - attach_terraform_workspace
+      - add_vcs_provider_to_ssh_known_hosts
+      - run:
+          name: terraform plan
+          command: terragrunt plan-all -input=false -out=tfplan
+      - set_workspace_persistance
+
+  apply_infrastructure:
+    executor:
+      name: terraform_executor
+    working_directory: /tmp/workspace
+    steps:
+      - attach_terraform_workspace
+      - run:
+          name: terraform apply
+          command: terragrunt apply-all -input=false tfplan
+
+
+
+
