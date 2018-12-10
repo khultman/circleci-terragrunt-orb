@@ -44,7 +44,7 @@ commands:
     steps:
       - run: terragrunt plan-all --terragrunt-non-interactive
   terragrunt_validate_all:
-    description: Run terragrunt validate-all -terragrunt-non-interactive
+    description: Run terragrunt validate-all
     steps:
       - run: terragrunt validate-all -terragrunt-non-interactive
   terragrunt_apply_all:

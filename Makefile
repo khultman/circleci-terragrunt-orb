@@ -7,7 +7,7 @@ BUILD_VERSION_FILE=last-build-version.txt
 validate-orb:
 	circleci orb validate orb.yml && echo
 
-publish-orb-dev:
+publish-orb-dev: $(MINOR_VERSION_FILE)
 	circleci orb publish orb.yml kchultman/terragrunt@dev:latest && echo
 	echo ${BUILD_VERSION} > $(BUILD_VERSION_FILE)
 
