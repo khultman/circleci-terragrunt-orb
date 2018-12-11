@@ -7,7 +7,7 @@
 version: 2.1
 
 orbs:
-  terragrunt: kchultman/terragrunt@0.1.2
+  terragrunt: kchultman/terragrunt@0.1.11
 
 context: &context
   terraform-access-keys
