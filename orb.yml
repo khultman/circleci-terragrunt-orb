@@ -17,14 +17,10 @@ executors:
 
 commands:
   add_vcs_provider_to_ssh_known_hosts:
-    description: Add VCS provider (github.com or bitbucket.org) to ~/.ssh/known_hosts
-    parameters:
-      vcs_provider:
-        type: string
-        description: Values should be bitbucket.org or github.com (Defaults to bitbucket.org)
-        default: bitbucket.org
+    description: Add VCS providers (github.com && bitbucket.org) to ~/.ssh/known_hosts
     steps:
-      - run: mkdir ~/.ssh && ssh-keyscan -t rsa << parameters.vcs_provider >> ~/.ssh/known_hosts
+      - run: mkdir ~/.ssh && ssh-keyscan -t rsa github.com ~/.ssh/known_hosts
+      - run: mkdir ~/.ssh && ssh-keyscan -t rsa bitbucket.org ~/.ssh/known_hosts
   attach_terraform_workspace:
     description: Attach the workspace to the docker image
     parameters:
