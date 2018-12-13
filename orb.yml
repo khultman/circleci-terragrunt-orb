@@ -32,10 +32,6 @@ commands:
     steps:
       - attach_workspace:
           at: << parameters.workspace_root >>
-  set_terraform_plugin_dir:
-    description: Set terraform plugins directory
-    steps:
-      - run: echo -e "plugin_cache_dir = \"$HOME/.terraform.d/plugin-cache\"\ndisable_checkpoint = true" > ~/.terraformrc
   terragrunt_plan_all:
     description: Run terragrunt plan-all --terragrunt-non-interactive
     steps:
@@ -80,7 +76,6 @@ jobs:
     steps:
       - attach_terraform_workspace
       - add_vcs_provider_to_ssh_known_hosts
-      - set_terraform_plugin_dir
       - terragrunt_validate_all
       - set_workspace_persistance
 
@@ -90,7 +85,6 @@ jobs:
     steps:
       - attach_terraform_workspace
       - add_vcs_provider_to_ssh_known_hosts
-      - set_terraform_plugin_dir
       - terragrunt_plan_all
       - set_workspace_persistance
 
@@ -100,7 +94,6 @@ jobs:
     steps:
       - attach_terraform_workspace
       - add_vcs_provider_to_ssh_known_hosts
-      - set_terraform_plugin_dir
       - terragrunt_apply_all
 
 
